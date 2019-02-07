@@ -12,6 +12,7 @@ export class PizzaFormTemplateComponent implements OnInit {
 
   // Initial values
   pizzaFormValue = {
+    customerName: 'Sebastian',
     selectedPizza: 'nap',
     selectedDrink: 'wat',
   };

@@ -6,6 +6,11 @@
     
 
 <form #pizzaForm="ngForm">
+  <h2 style="margin-right: 20px">Personal information</h2>
+  <mat-form-field style="width: 100%">
+    <input matInput placeholder="Enter your name" name="customerName" #customerName="ngModel" [(ngModel)]="pizzaFormValue.customerName"
+      [required]="requiredForm" [disabled]="isDisabled">
+  </mat-form-field>
   <app-pizza-selector name="selectedPizza" [required]="requiredForm" #selectedPizza="ngModel" [(ngModel)]="pizzaFormValue.selectedPizza"
     [disabled]="isDisabled"></app-pizza-selector>
   <app-drink-selector name="selectedDrink" [required]="requiredForm" #selectedDrink="ngModel" [(ngModel)]="pizzaFormValue.selectedDrink"
@@ -24,6 +29,10 @@
 
 <div>
   <h2> Parent form errors </h2>
+  <a>
+      customerName: {{customerName.errors | json}}
+  </a>
+  <br>
   <a>
       selectedPizza: {{selectedPizza.errors | json}}
   </a>

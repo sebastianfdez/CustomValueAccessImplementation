@@ -8,6 +8,8 @@ import { FormGroup, FormControl, Validators, ValidatorFn, ValidationErrors, Abst
 })
 export class PizzaReactiveFormComponent implements OnInit {
 
+  required = false;
+
   // Main Reactive Form
   public pizzaForm: FormGroup = new FormGroup({
     customerName: new FormControl(null),
@@ -28,6 +30,7 @@ export class PizzaReactiveFormComponent implements OnInit {
 
   setValidators(required: boolean) {
     // Set every control as required
+    this.pizzaForm.controls.customerName.setValidators(required ? Validators.required : []);
     this.pizzaForm.controls.selectedPizza.setValidators(required ? Validators.required : []);
     this.pizzaForm.controls.selectedPizza.updateValueAndValidity();
     this.pizzaForm.controls.selectedDrink.setValidators(required ? Validators.required : []);
@@ -50,6 +53,7 @@ export class PizzaReactiveFormComponent implements OnInit {
   }
 
   setRequireForm(event) {
+    this.required = event.checked;
     this.setValidators(event.checked);
   }
 }

@@ -9,7 +9,7 @@
 <form [formGroup]="pizzaForm" >
   <h2 style="margin-right: 20px">Personal information</h2>
   <mat-form-field style="width: 100%">
-    <input matInput placeholder="Enter your name" formControlName="customerName">
+    <input matInput placeholder="Enter your name" formControlName="customerName" [required]="required">
   </mat-form-field>
   <app-pizza-selector formControlName="selectedPizza"></app-pizza-selector>
   <app-drink-selector formControlName="selectedDrink"></app-drink-selector>
@@ -27,6 +27,10 @@
 
 <div>
   <h2> Parent form errors </h2>
+  <a>
+      customer name: {{pizzaForm.controls.customerName.errors | json}}
+  </a>
+  <br>
   <a>
       selectedPizza: {{pizzaForm.controls.selectedPizza.errors | json}}
   </a>
