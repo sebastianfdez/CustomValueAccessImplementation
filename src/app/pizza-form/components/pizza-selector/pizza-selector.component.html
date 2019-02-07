@@ -1,0 +1,22 @@
+<div style="display: flex; align-items: center;">
+  <h2 style="margin-right: 20px">Select your pizza</h2>
+  <mat-checkbox [(ngModel)]="pizzaFormControl.disabled" (change)="disableForm($event)">Disable Pizza control</mat-checkbox> 
+</div>
+
+<mat-form-field style="width: 100%">
+
+  <mat-select placeholder="Select your pizza type" [formControl]="pizzaFormControl" (selectionChange)="onChanges($event)"
+    [required]="required">
+    <mat-option *ngFor="let option of typeOfPizzas" value="{{option.value}}">{{option.name}}</mat-option>
+    <mat-option value="">Empty pizza</mat-option>
+  </mat-select>
+
+</mat-form-field>
+
+<div *ngIf="pizzaFormControl.invalid && (pizzaFormControl.dirty || pizzaFormControl.touched)">
+
+  <mat-error *ngIf="pizzaFormControl.errors?.required">
+    *Select one type of pizza
+  </mat-error>
+
+</div>

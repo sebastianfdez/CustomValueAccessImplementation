@@ -3,6 +3,14 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { PizzaFormModule } from './pizza-form/pizza-form.module';
+import { RouterModule, Routes } from '@angular/router';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+const routes: Routes = [
+  {path: '', redirectTo: '/pizza', pathMatch: 'full'},
+];
 
 @NgModule({
   declarations: [
@@ -10,7 +18,10 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    PizzaFormModule,
+    BrowserAnimationsModule,
+    RouterModule.forRoot(routes),
   ],
   providers: [],
   bootstrap: [AppComponent]

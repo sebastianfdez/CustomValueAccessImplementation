@@ -1,0 +1,34 @@
+<div style="display: flex; align-items: center">
+  <h1 style="margin-right: 20px">Template driven Form</h1>
+  <mat-checkbox (change)="disableForm($event)">Disable Form</mat-checkbox>
+  <mat-checkbox [(ngModel)]="requiredForm" (change)="setRequireForm($event)">Set Required Form</mat-checkbox>
+</div>
+    
+
+<form #pizzaForm="ngForm">
+  <app-pizza-selector name="selectedPizza" [required]="requiredForm" #selectedPizza="ngModel" [(ngModel)]="pizzaFormValue.selectedPizza"
+    [disabled]="isDisabled"></app-pizza-selector>
+  <app-drink-selector name="selectedDrink" [required]="requiredForm" #selectedDrink="ngModel" [(ngModel)]="pizzaFormValue.selectedDrink"
+    [disabled]="isDisabled"></app-drink-selector>
+  
+</form>
+
+<br>
+
+<div>
+  <h2> Parent form value: </h2>
+  {{pizzaForm.value | json}}
+</div>
+
+<br>
+
+<div>
+  <h2> Parent form errors </h2>
+  <a>
+      selectedPizza: {{selectedPizza.errors | json}}
+  </a>
+  <br>
+  <a>
+      selectedDrink: {{selectedDrink.errors | json}}
+  </a>
+</div>

@@ -1,0 +1,37 @@
+
+<div style="display: flex; align-items: center">
+  <h1 style="margin-right: 20px">Reactive Form</h1>
+  <mat-checkbox (change)="disableForm($event)">Disable Form</mat-checkbox>
+  <mat-checkbox [(ngModel)]="requiredForm" (change)="setRequireForm($event)">Set Required Form</mat-checkbox>
+</div>
+    
+
+<form [formGroup]="pizzaForm" >
+  <h2 style="margin-right: 20px">Personal information</h2>
+  <mat-form-field style="width: 100%">
+    <input matInput placeholder="Enter your name" formControlName="customerName">
+  </mat-form-field>
+  <app-pizza-selector formControlName="selectedPizza"></app-pizza-selector>
+  <app-drink-selector formControlName="selectedDrink"></app-drink-selector>
+  
+</form>
+
+<br>
+
+<div>
+  <h2> Parent form value: </h2>
+  {{pizzaForm.value | json}}
+</div>
+
+<br>
+
+<div>
+  <h2> Parent form errors </h2>
+  <a>
+      selectedPizza: {{pizzaForm.controls.selectedPizza.errors | json}}
+  </a>
+  <br>
+  <a>
+      selectedDrink: {{pizzaForm.controls.selectedDrink.errors | json}}
+  </a>
+</div>

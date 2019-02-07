@@ -1,0 +1,17 @@
+<div style="display: flex; align-items: center;">
+  <h2 style="margin-right: 20px">Select your drink</h2>
+  <mat-checkbox [(ngModel)]="drinkFormControl.disabled" (change)="disableForm($event)">Disable drink control</mat-checkbox> 
+</div>
+
+<mat-radio-group [formControl]="drinkFormControl" (change)="onChanges($event)" [required]="required">
+  <mat-radio-button style="margin-right: 20px" *ngFor="let option of typeOfDrinks" value="{{option.value}}">{{option.name}}</mat-radio-button>
+  <mat-radio-button value="">Empty drink</mat-radio-button>
+</mat-radio-group>
+
+<div *ngIf="drinkFormControl.invalid && (drinkFormControl.dirty || drinkFormControl.touched)">
+
+  <mat-error *ngIf="drinkFormControl.errors?.required">
+    *Select one type of drink
+  </mat-error>
+
+</div>
