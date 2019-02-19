@@ -1,6 +1,9 @@
-import { Component, OnInit, forwardRef, Injector, AfterContentInit } from '@angular/core';
+import { Component, OnInit, forwardRef, Injector, AfterContentInit, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormControl, RequiredValidator } from '@angular/forms';
 import { FormUtilsService } from '../../services/form-utils.service';
+import { PizzaDrinkService } from '../../services/pizza-drink.service';
+import { PizzaType } from '../models/pizza-type';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-pizza-selector',
@@ -16,16 +19,15 @@ import { FormUtilsService } from '../../services/form-utils.service';
 })
 
 // To use this component as a FormControl or FormGroup it is necesary to use the interface ControlValueAccessor
-export class PizzaSelectorComponent implements OnInit, ControlValueAccessor, AfterContentInit {
+export class PizzaSelectorComponent implements OnInit, ControlValueAccessor, AfterContentInit, OnDestroy {
+
+  typeOfPizzas: PizzaType[] = [];
+
+  // Create a list of subscriptions to push every subscription done in the component.
+  subscriptions: Subscription[] = [];
 
   // Pizza selector Form control
   pizzaFormControl: FormControl = new FormControl('');
-
-  typeOfPizzas = [
-    {value: 'nap', name: 'Napolitana'},
-    {value: 'mar', name: 'Margarita'},
-    {value: 'cal', name: 'California'},
-  ];
 
   get required() {
     try {
@@ -38,9 +40,20 @@ export class PizzaSelectorComponent implements OnInit, ControlValueAccessor, Aft
   constructor(
     private formUtil: FormUtilsService,
     private injector: Injector,
+    private pizzaDrinkService: PizzaDrinkService,
   ) { }
 
   ngOnInit() {
+    this.subscriptions.push(
+      this.pizzaDrinkService.getPizzaTypes().subscribe((pizzaTypes: PizzaType[]) => {
+        this.typeOfPizzas = pizzaTypes;
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    // When the component is destroyed, it is necessary to unsubscribe from all the subscriptions
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   ngAfterContentInit() {

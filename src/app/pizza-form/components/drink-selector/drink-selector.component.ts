@@ -1,6 +1,9 @@
-import { Component, OnInit, forwardRef, Injector, AfterContentInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, forwardRef, Injector, AfterContentInit, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormControl, RequiredValidator } from '@angular/forms';
 import { FormUtilsService } from '../../services/form-utils.service';
+import { DrinkType } from '../models/drink-type';
+import { PizzaDrinkService } from '../../services/pizza-drink.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-drink-selector',
@@ -16,16 +19,15 @@ import { FormUtilsService } from '../../services/form-utils.service';
 })
 
 // To use this component as a FormControl or FormGroup it is necesary to use the interface ControlValueAccessor
-export class DrinkSelectorComponent implements OnInit, ControlValueAccessor, AfterContentInit {
+export class DrinkSelectorComponent implements OnInit, ControlValueAccessor, AfterContentInit, OnDestroy {
 
   // Drink selector Form control
   drinkFormControl: FormControl = new FormControl('');
 
-  typeOfDrinks = [
-    {value: 'coke', name: 'Coca-Cola'},
-    {value: 'wat', name: 'Water'},
-    {value: 'beer', name: 'Beer'},
-  ];
+  typeOfDrinks: DrinkType[] = [];
+
+  // Create a list of subscriptions to push every subscription done in the component.
+  subscriptions: Subscription[] = [];
 
   get required() {
     try {
@@ -38,9 +40,20 @@ export class DrinkSelectorComponent implements OnInit, ControlValueAccessor, Aft
   constructor(
     private formUtil: FormUtilsService,
     private injector: Injector,
+    private pizzaDrinkService: PizzaDrinkService,
   ) { }
 
   ngOnInit() {
+    this.subscriptions.push(
+      this.pizzaDrinkService.getDrinkTypes().subscribe((drinkTypes: DrinkType[]) => {
+        this.typeOfDrinks = drinkTypes;
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    // When the component is destroyed, it is necessary to unsubscribe from all the subscriptions
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   ngAfterContentInit() {
